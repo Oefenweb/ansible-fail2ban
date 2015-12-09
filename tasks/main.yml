@@ -5,7 +5,7 @@
     name: fail2ban
     state: latest
     update_cache: true
-    cache_valid_time: 3600
+    cache_valid_time: "{{ fail2ban_apt_cache_valid_time }}"
   tags: [configuration, fail2ban, fail2ban-install]
 
 - name: update configuration file - /etc/fail2ban/fail2ban.conf

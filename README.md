@@ -9,6 +9,7 @@ Set up fail2ban in Debian-like systems.
 None
 
 #### Variables
+- `fail2ban_apt_cache_valid_time`: [default: `3600`]: Time (in seconds) to pass to Ansible for updating the apt-cache before installing fail2ban
 
 - `fail2ban_loglevel`: [default: `3`]: Sets the loglevel output (1 = ERROR, 2 = WARN, 3 = INFO, 4 = DEBUG)
 - `fail2ban_logtarget`: [default: `/var/log/fail2ban.log`]: Sets the log target. This could be a file, SYSLOG, STDERR or STDOUT
@@ -88,6 +89,7 @@ MIT
 #### Author Information
 
 Mischa ter Smitten (based on work of [ANXS](https://github.com/ANXS))
+[Dan Tehranian](https://github.com/tehranian)
 
 #### Feedback, bug-reports, requests, ...
 
