@@ -59,7 +59,7 @@ None
 ---
 - hosts: all
   roles:
-    - fail2ban
+    - { role: tersmitten.fail2ban }
 ```
 
 ##### Add custom filters (from outside the role)
@@ -68,7 +68,7 @@ None
 ---
 - hosts: all
   roles:
-    - fail2ban
+    - { role: tersmitten.fail2ban }
   vars:
     fail2ban_filterd_path: ../../../files/fail2ban/etc/fail2ban/filter.d/
     fail2ban_services:
