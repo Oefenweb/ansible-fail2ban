@@ -7,6 +7,8 @@ fail2ban_syslog_facility: 1
 fail2ban_socket: /var/run/fail2ban/fail2ban.sock
 fail2ban_pidfile: /var/run/fail2ban/fail2ban.pid
 
+fail2ban_sendername: 'Fail2ban'
+
 fail2ban_ignoreips:
  - 127.0.0.1/8
 fail2ban_bantime: 600

@@ -24,6 +24,10 @@ ignoreip = {{ fail2ban_ignoreips | join(' ') }}
 bantime  = {{ fail2ban_bantime }}
 maxretry = {{ fail2ban_maxretry }}
 findtime = {{ fail2ban_findtime }}
+sendername = {{ fail2ban_sendername }}
+{% if fail2ban_sender is defined %}
+sender = {{ fail2ban_sender }}
+{% endif %}
 
 # "backend" specifies the backend used to get files modification. Available
 # options are "gamin", "polling" and "auto".

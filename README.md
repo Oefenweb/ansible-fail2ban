@@ -22,13 +22,14 @@ None
 - `fail2ban_maxretry`: [default: `3`]: Maximum number of retries before the host is put into jail
 - `fail2ban_findtime`: [default: `600`]: A host is banned if it has generated `fail2ban_maxretry` during the last `fail2ban_findtime` (this can be overriden for each service)
 - `fail2ban_backend`: [default: `auto`]: Specifies the backend used to get files modification
-- `fail2ban_email`: [default: `root@localhost`]: Email address which can be used in the interpolation of the `fail2ban_services`
 - `fail2ban_banaction`: [default: `iptables-multiport`]: Sets the global/default banaction (can be overriden on a per role basis)
 - `fail2ban_mta`: [default: `sendmail`]: Email action
 - `fail2ban_protocol`: [default: `tcp`]: Sets the default protocol
 - `fail2ban_chain`: [default: `INPUT`]: Specifies the chain where jumps would need to be added in iptables-* actions
 - `fail2ban_action`: [default: `action_`]: Default action
+- `fail2ban_sendername`: [default: `Fail2ban`]: The 'from' name for emails sent by mta actions.  NB: Use `fail2ban_sender` to set the 'from' email address.
 
+- `fail2ban_sender`: [optional]: The 'from' address for emails sent by mta actions.
 - `fail2ban_filterd_path`: [optional]: Path to directory containing filters to copy (**note the trailing slash**)
 - `fail2ban_actiond_path`: [optional]: Path to directory containing actions to copy (**note the trailing slash**)
 - `fail2ban_jaild_path`: [optional]: Path to directory containing jails to copy (**note the trailing slash**)
