@@ -79,6 +79,51 @@
     - fail2ban
     - fail2ban-jails
 
+- name: generate filters
+  template:
+    src: "fail2ban/etc/fail2ban/filter.d/{{ item }}.j2"
+    dest: /etc/fail2ban/filter.d/{{ item }}
+    owner: root
+    group: root
+    mode: 0644
+  when: fail2ban_filterd_templates is defined
+  with_list: "{{ fail2ban_filterd_templates }}"
+  notify: restart fail2ban
+  tags:
+    - configuration
+    - fail2ban
+    - fail2ban-filters
+
+- name: generate actions
+  template:
+    src: "fail2ban/etc/fail2ban/action.d/{{ item }}.j2"
+    dest: /etc/fail2ban/action.d/{{ item }}
+    owner: root
+    group: root
+    mode: 0644
+  when: fail2ban_actiond_templates is defined
+  with_list: "{{ fail2ban_actiond_templates }}"
+  notify: restart fail2ban
+  tags:
+    - configuration
+    - fail2ban
+    - fail2ban-actions
+
+- name: generate jails
+  template:
+    src: "fail2ban/etc/fail2ban/jail.d/{{ item }}.j2"
+    dest: /etc/fail2ban/jail.d/{{ item }}
+    owner: root
+    group: root
+    mode: 0644
+  when: fail2ban_jaild_templates is defined
+  with_list: "{{ fail2ban_jaild_templates }}"
+  notify: restart fail2ban
+  tags:
+    - configuration
+    - fail2ban
+    - fail2ban-jails
+
 - name: start and enable service
   service:
     name: fail2ban
