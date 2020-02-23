@@ -1,0 +1,12 @@
+- name: copy actions
+  ansible.builtin.copy:
+    src: "{{ fail2ban_actiond_path }}"
+    dest: /etc/fail2ban/action.d/
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart fail2ban
+  tags:
+    - configuration
+    - fail2ban
+    - fail2ban-actions

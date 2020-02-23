@@ -71,47 +71,8 @@
     - fail2ban-configuration
     - fail2ban-configuration-update
 
-- name: copy filters
-  ansible.builtin.copy:
-    src: "{{ fail2ban_filterd_path }}"
-    dest: /etc/fail2ban/filter.d/
-    owner: root
-    group: root
-    mode: 0644
-  when: fail2ban_filterd_path is defined
-  notify: restart fail2ban
-  tags:
-    - configuration
-    - fail2ban
-    - fail2ban-filters
-
-- name: copy actions
-  ansible.builtin.copy:
-    src: "{{ fail2ban_actiond_path }}"
-    dest: /etc/fail2ban/action.d/
-    owner: root
-    group: root
-    mode: 0644
-  when: fail2ban_actiond_path is defined
-  notify: restart fail2ban
-  tags:
-    - configuration
-    - fail2ban
-    - fail2ban-actions
-
-- name: copy jails
-  ansible.builtin.copy:
-    src: "{{ fail2ban_jaild_path }}"
-    dest: /etc/fail2ban/jail.d/
-    owner: root
-    group: root
-    mode: 0644
-  when: fail2ban_jaild_path is defined
-  notify: restart fail2ban
-  tags:
-    - configuration
-    - fail2ban
-    - fail2ban-jails
+- name: copy custom configurations
+  ansible.builtin.import_tasks: copy_custom_configurations.yml
 
 - name: start and enable service
   ansible.builtin.service:

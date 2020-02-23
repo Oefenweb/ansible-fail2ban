@@ -1,0 +1,11 @@
+- name: copy filters
+  ansible.builtin.import_tasks: copy_filters.yml
+  when: fail2ban_filterd_path is defined
+
+- name: copy actions
+  ansible.builtin.import_tasks: copy_actions.yml
+  when: fail2ban_actiond_path is defined
+
+- name: copy jails
+  ansible.builtin.import_tasks: copy_jails.yml
+  when: fail2ban_jaild_path is defined
