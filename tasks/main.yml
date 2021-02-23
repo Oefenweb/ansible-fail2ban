@@ -1,7 +1,7 @@
 # tasks file for fail2ban
 ---
 - name: install
-  apt:
+  ansible.builtin.apt:
     name: "{{ fail2ban_dependencies }}"
     state: "{{ apt_install_state | default('latest') }}"
     update_cache: true
@@ -12,7 +12,7 @@
     - fail2ban-install
 
 - name: remove configuration file - /etc/fail2ban/jail.d/defaults-debian.conf
-  file:
+  ansible.builtin.file:
     state: absent
     path: /etc/fail2ban/jail.d/defaults-debian.conf
   notify: restart fail2ban
@@ -23,7 +23,7 @@
     - fail2ban-configuration-delete
 
 - name: update configuration file - /etc/fail2ban/fail2ban.local
-  template:
+  ansible.builtin.template:
     src: etc/fail2ban/fail2ban.local.j2
     dest: /etc/fail2ban/fail2ban.local
     owner: root
@@ -37,7 +37,7 @@
     - fail2ban-configuration-update
 
 - name: update configuration file - /etc/fail2ban/jail.local
-  template:
+  ansible.builtin.template:
     src: etc/fail2ban/jail.local.j2
     dest: /etc/fail2ban/jail.local
     owner: root
@@ -51,7 +51,7 @@
     - fail2ban-configuration-update
 
 - name: copy filters
-  copy:
+  ansible.builtin.copy:
     src: "{{ fail2ban_filterd_path }}"
     dest: /etc/fail2ban/filter.d/
     owner: root
@@ -65,7 +65,7 @@
     - fail2ban-filters
 
 - name: copy actions
-  copy:
+  ansible.builtin.copy:
     src: "{{ fail2ban_actiond_path }}"
     dest: /etc/fail2ban/action.d/
     owner: root
@@ -79,7 +79,7 @@
     - fail2ban-actions
 
 - name: copy jails
-  copy:
+  ansible.builtin.copy:
     src: "{{ fail2ban_jaild_path }}"
     dest: /etc/fail2ban/jail.d/
     owner: root
@@ -93,7 +93,7 @@
     - fail2ban-jails
 
 - name: start and enable service
-  service:
+  ansible.builtin.service:
     name: fail2ban
     state: "{{ service_default_state | default('started') }}"
     enabled: "{{ service_default_enabled | default(true) | bool }}"
