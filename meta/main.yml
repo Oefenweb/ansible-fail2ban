@@ -6,18 +6,15 @@ galaxy_info:
   company: Oefenweb.nl B.V.
   description: Set up fail2ban in Debian-like systems
   license: MIT
-  min_ansible_version: 2.8.0
+  min_ansible_version: 2.10.0
   platforms:
     - name: Ubuntu
       versions:
-        - precise
-        - trusty
         - xenial
         - bionic
+        - fical
     - name: Debian
       versions:
-        - wheezy
-        - jessie
         - stretch
         - buster
   galaxy_tags:
