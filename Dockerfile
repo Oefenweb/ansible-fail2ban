@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 MAINTAINER Mischa ter Smitten <mtersmitten@oefenweb.nl>
 
 # python
@@ -11,7 +11,7 @@ RUN rm -rf $HOME/.cache
 # ansible
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y gcc libffi-dev libssl-dev && \
   apt-get clean
-RUN pip install ansible==2.9.14
+RUN pip install ansible==2.10
 RUN rm -rf $HOME/.cache
 
 # provision
