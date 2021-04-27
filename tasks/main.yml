@@ -51,13 +51,14 @@
     - fail2ban-configuration-update
 
 - name: copy filters
-  copy:
-    src: "{{ fail2ban_filterd_path }}"
-    dest: /etc/fail2ban/filter.d/
+  template:
+    src: "{{ item }}"
+    dest: "/etc/fail2ban/filter.d/{{ item | basename | regex_replace('\\.j2','') }}"
     owner: root
     group: root
     mode: 0644
-  when: fail2ban_filterd_path is defined
+  with_items: "{{ fail2ban_filters }}"
+  when: fail2ban_filters is defined
   notify: restart fail2ban
   tags:
     - configuration
@@ -65,13 +66,14 @@
     - fail2ban-filters
 
 - name: copy actions
-  copy:
-    src: "{{ fail2ban_actiond_path }}"
-    dest: /etc/fail2ban/action.d/
+  template:
+    src: "{{ item }}"
+    dest: "/etc/fail2ban/action.d/{{ item | basename | regex_replace('\\.j2','') }}"
     owner: root
     group: root
     mode: 0644
-  when: fail2ban_actiond_path is defined
+  with_items: "{{ fail2ban_actions }}"
+  when: fail2ban_actions is defined
   notify: restart fail2ban
   tags:
     - configuration
@@ -79,13 +81,14 @@
     - fail2ban-actions
 
 - name: copy jails
-  copy:
-    src: "{{ fail2ban_jaild_path }}"
-    dest: /etc/fail2ban/jail.d/
+  template:
+    src: "{{ item }}"
+    dest: "/etc/fail2ban/jail.d/{{ item | basename | regex_replace('\\.j2','') }}"
     owner: root
     group: root
     mode: 0644
-  when: fail2ban_jaild_path is defined
+  with_items: "{{ fail2ban_jails }}"
+  when: fail2ban_jails is defined
   notify: restart fail2ban
   tags:
     - configuration
