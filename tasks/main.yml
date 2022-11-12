@@ -6,6 +6,7 @@
     state: "{{ apt_install_state | default('latest') }}"
     update_cache: true
     cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
+  become: yes
   tags:
     - configuration
     - fail2ban
@@ -17,6 +18,7 @@
   changed_when: false
   check_mode: false
   register: _fail2ban_version_raw
+  become: yes
   tags:
     - configuration
     - fail2ban
@@ -27,6 +29,7 @@
     fail2ban_version: "{{ _fail2ban_version_raw.stdout | regex_search('([0-9]+\\.[0-9]+\\.[0-9]+)') }}"
   changed_when: false
   check_mode: false
+  become: yes
   tags:
     - configuration
     - fail2ban
@@ -37,6 +40,7 @@
     state: absent
     path: /etc/fail2ban/jail.d/defaults-debian.conf
   notify: restart fail2ban
+  become: yes
   tags:
     - configuration
     - fail2ban
@@ -51,6 +55,7 @@
     group: root
     mode: 0644
   notify: restart fail2ban
+  become: yes
   tags:
     - configuration
     - fail2ban
@@ -65,6 +70,7 @@
     group: root
     mode: 0644
   notify: restart fail2ban
+  become: yes
   tags:
     - configuration
     - fail2ban
@@ -80,6 +86,7 @@
     mode: 0644
   when: fail2ban_filterd_path is defined
   notify: restart fail2ban
+  become: yes
   tags:
     - configuration
     - fail2ban
@@ -94,6 +101,7 @@
     mode: 0644
   when: fail2ban_actiond_path is defined
   notify: restart fail2ban
+  become: yes
   tags:
     - configuration
     - fail2ban
@@ -108,6 +116,7 @@
     mode: 0644
   when: fail2ban_jaild_path is defined
   notify: restart fail2ban
+  become: yes
   tags:
     - configuration
     - fail2ban
@@ -118,6 +127,7 @@
     name: fail2ban
     state: "{{ service_default_state | default('started') }}"
     enabled: "{{ service_default_enabled | default(true) | bool }}"
+  become: yes
   tags:
     - configuration
     - fail2ban
