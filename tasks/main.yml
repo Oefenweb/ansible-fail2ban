@@ -1,7 +1,7 @@
-# tasks file for fail2ban
+# tasks file
 ---
 - name: install
-  apt:
+  ansible.builtin.apt:
     name: "{{ fail2ban_dependencies }}"
     state: "{{ apt_install_state | default('latest') }}"
     update_cache: true
@@ -11,8 +11,40 @@
     - fail2ban
     - fail2ban-install
 
+- name: get fail2ban version
+  ansible.builtin.command: >
+    fail2ban-server -V
+  changed_when: false
+  check_mode: false
+  register: _fail2ban_version_raw
+  tags:
+    - configuration
+    - fail2ban
+    - fail2ban-install
+
+- name: register fail2ban version
+  ansible.builtin.set_fact:
+    fail2ban_version: "{{ _fail2ban_version_raw.stdout | regex_search('([0-9]+\\.[0-9]+\\.[0-9]+)') }}"
+  changed_when: false
+  check_mode: false
+  tags:
+    - configuration
+    - fail2ban
+    - fail2ban-install
+
+- name: remove configuration file - /etc/fail2ban/jail.d/defaults-debian.conf
+  ansible.builtin.file:
+    state: absent
+    path: /etc/fail2ban/jail.d/defaults-debian.conf
+  notify: restart fail2ban
+  tags:
+    - configuration
+    - fail2ban
+    - fail2ban-configuration
+    - fail2ban-configuration-delete
+
 - name: update configuration file - /etc/fail2ban/fail2ban.local
-  template:
+  ansible.builtin.template:
     src: etc/fail2ban/fail2ban.local.j2
     dest: /etc/fail2ban/fail2ban.local
     owner: root
@@ -23,9 +55,10 @@
     - configuration
     - fail2ban
     - fail2ban-configuration
+    - fail2ban-configuration-update
 
 - name: update configuration file - /etc/fail2ban/jail.local
-  template:
+  ansible.builtin.template:
     src: etc/fail2ban/jail.local.j2
     dest: /etc/fail2ban/jail.local
     owner: root
@@ -36,16 +69,16 @@
     - configuration
     - fail2ban
     - fail2ban-configuration
+    - fail2ban-configuration-update
 
 - name: copy filters
-  template:
-    src: "{{ item }}"
-    dest: "/etc/fail2ban/filter.d/{{ item | basename | regex_replace('\\.j2','') }}"
+  ansible.builtin.copy:
+    src: "{{ fail2ban_filterd_path }}"
+    dest: /etc/fail2ban/filter.d/
     owner: root
     group: root
     mode: 0644
-  with_items: "{{ fail2ban_filters }}"
-  when: fail2ban_filters is defined
+  when: fail2ban_filterd_path is defined
   notify: restart fail2ban
   tags:
     - configuration
@@ -53,14 +86,13 @@
     - fail2ban-filters
 
 - name: copy actions
-  template:
-    src: "{{ item }}"
-    dest: "/etc/fail2ban/action.d/{{ item | basename | regex_replace('\\.j2','') }}"
+  ansible.builtin.copy:
+    src: "{{ fail2ban_actiond_path }}"
+    dest: /etc/fail2ban/action.d/
     owner: root
     group: root
     mode: 0644
-  with_items: "{{ fail2ban_actions }}"
-  when: fail2ban_actions is defined
+  when: fail2ban_actiond_path is defined
   notify: restart fail2ban
   tags:
     - configuration
@@ -83,7 +115,7 @@
     - fail2ban-jails
 
 - name: start and enable service
-  service:
+  ansible.builtin.service:
     name: fail2ban
     state: "{{ service_default_state | default('started') }}"
     enabled: "{{ service_default_enabled | default(true) | bool }}"

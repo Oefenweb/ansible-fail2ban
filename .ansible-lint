@@ -1,2 +1,6 @@
-skip_list:
+---
+warn_list:
+  - role-name
+  - name[casing]
+  - '303'
   - '405'

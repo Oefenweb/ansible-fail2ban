@@ -1,22 +1,20 @@
-# meta file for fail2ban
+# meta file
 ---
 galaxy_info:
+  author: oefenweb
   role_name: fail2ban
-  author: Mischa ter Smitten
   company: Oefenweb.nl B.V.
   description: Set up fail2ban in Debian-like systems
   license: MIT
-  min_ansible_version: 2.6.0
+  min_ansible_version: 2.10.0
   platforms:
     - name: Ubuntu
       versions:
-        - precise
-        - trusty
         - xenial
         - bionic
+        - focal
     - name: Debian
       versions:
-        - wheezy
         - jessie
         - stretch
         - buster

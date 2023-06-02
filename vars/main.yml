@@ -1,4 +1,4 @@
-# vars file for fail2ban
+# vars file
 ---
 fail2ban_dependencies:
   - fail2ban

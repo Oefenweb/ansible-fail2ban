@@ -1,6 +1,6 @@
-# defaults file for fail2ban
+# defaults file
 ---
-fail2ban_loglevel: "{{ 'INFO' if (ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('16.04', '>=') or ansible_distribution == 'Debian' and ansible_distribution_version is version('9', '>=')) else 3 }}"
+fail2ban_loglevel: "{{ 'INFO' if (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version is version('16', '>=') or ansible_distribution == 'Debian' and ansible_distribution_major_version is version('9', '>=')) else 3 }}"
 fail2ban_logtarget: /var/log/fail2ban.log
 fail2ban_syslog_target: /var/log/fail2ban.log
 fail2ban_syslog_facility: 1
@@ -11,18 +11,25 @@ fail2ban_dbpurgeage: 86400
 fail2ban_sendername: 'Fail2ban'
 
 fail2ban_ignoreips:
- - 127.0.0.1/8
- - ::1
+  - 127.0.0.1/8
+  - ::1
+
 fail2ban_bantime: 600
+fail2ban_bantime_increment: true
+fail2ban_bantime_factor: 1
+fail2ban_bantime_formula: 'ban.Time * (1<<(ban.Count if ban.Count<20 else 20)) * banFactor'
+fail2ban_bantime_overalljails: false
+
 fail2ban_maxretry: 3
 fail2ban_findtime: 600
 fail2ban_backend: auto
 fail2ban_destemail: root@localhost
 fail2ban_banaction: iptables-multiport
+fail2ban_banaction_allports: iptables-allports
 fail2ban_mta: sendmail
 fail2ban_protocol: tcp
 fail2ban_chain: INPUT
 fail2ban_action: '%(action_)s'
 
 fail2ban_services:
-  - name: "{{ 'sshd' if (ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('16.04', '>=') or ansible_distribution == 'Debian' and ansible_distribution_version is version('9', '>=')) else 'ssh' }}"
+  - name: "{{ 'sshd' if (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version is version('16', '>=') or ansible_distribution == 'Debian' and ansible_distribution_major_version is version('9', '>=')) else 'ssh' }}"

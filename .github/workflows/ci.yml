@@ -1,0 +1,78 @@
+---
+name: CI
+'on':
+  pull_request:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '30 1 * * 3'
+
+jobs:
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the codebase
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install test dependencies
+        run: |
+          pip install ansible-lint
+          ansible-galaxy install -r requirements.yml
+
+      - name: Lint code
+        run: |
+          yamllint .
+          ansible-lint
+
+  molecule:
+    name: Molecule
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "${{ github.repository }}"
+    needs:
+      - lint
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - distro: debian8
+          - distro: debian9
+          - distro: debian10
+          - distro: ubuntu1604
+            ansible-version: '>=2.10, <2.11'
+          - distro: ubuntu1604
+          - distro: ubuntu1804
+          - distro: ubuntu2004
+
+    steps:
+      - name: Check out the codebase
+        uses: actions/checkout@v3
+        with:
+          path: "${{ github.repository }}"
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install test dependencies
+        run: pip install 'ansible${{ matrix.ansible-version }}' molecule[docker] docker
+
+      - name: Run Molecule tests
+        run: |
+          molecule test
+        env:
+          ANSIBLE_FORCE_COLOR: '1'
+          ANSIBLE_VERBOSITY: '2'
+          MOLECULE_DEBUG: '1'
+          MOLECULE_DISTRO: "${{ matrix.distro }}"
+          PY_COLORS: '1'

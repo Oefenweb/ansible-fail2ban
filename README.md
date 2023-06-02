@@ -1,6 +1,7 @@
 # fail2ban
 
-[![Build Status](https://travis-ci.org/Oefenweb/ansible-fail2ban.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-fail2ban) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-fail2ban-blue.svg)](https://galaxy.ansible.com/Oefenweb/fail2ban)
+[![CI](https://github.com/Oefenweb/ansible-fail2ban/workflows/CI/badge.svg)](https://github.com/Oefenweb/ansible-fail2ban/actions?query=workflow%3ACI)
+[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-fail2ban-blue.svg)](https://galaxy.ansible.com/Oefenweb/fail2ban)
 
 Set up fail2ban in Debian-like systems.
 
@@ -24,6 +25,7 @@ None
 - `fail2ban_findtime`: [default: `600`]: A host is banned if it has generated `fail2ban_maxretry` during the last `fail2ban_findtime`
 - `fail2ban_backend`: [default: `auto`]: Specifies the backend used to get files modification
 - `fail2ban_banaction`: [default: `iptables-multiport`]: Sets the global/default banaction
+- `fail2ban_banaction_allports`: [default: `iptables-allports`]: Sets the global/default banaction for allports
 - `fail2ban_mta`: [default: `sendmail`]: Email action
 - `fail2ban_protocol`: [default: `tcp`]: Sets the default protocol
 - `fail2ban_chain`: [default: `INPUT`]: Specifies the chain where jumps would need to be added in iptables-* actions
@@ -39,6 +41,15 @@ None
 - `fail2ban_services.{n}.enabled` [default: `true`]: Whether or not enabled
 - `fail2ban_services.{n}.*` [optional]: Name of the option
 - `fail2ban_services.{n}.*.*` [optional]: Value of the option
+
+### For version >= 0.11.1
+
+- `fail2ban_bantime_increment`: [default: `true`]: Increases bantime after being banned before
+- `fail2ban_bantime_factor`: [default: `1`]: Bantime increase factor for `bantime_formula` or `bantime_multipliers`
+- `fail2ban_bantime_formula`: [default: `'ban.Time * (1<<(ban.Count if ban.Count<20 else 20)) * banFactor'`]: Formula that will be used to calculate the increased bantime. **Note that you can either use `bantime_formula` or `bantime_multipliers` while `bantime_multipliers` takes precedence.**
+- `fail2ban_bantime_overalljails`: [default: `false`]: Ban IPs for all jails if multiple are defined
+- `fail2ban_bantime_rndtime`: [optional]: Option for smart bots that try to access after the bantime immediately
+- `fail2ban_bantime_multipliers`: [optional]: Multiplier to use instead of bantime_formula. For example `1 2 4 8 16 32 64`. **Note for bantime = 600 and bantime_factor=1 this would be `600*1*1, 600*1*2...`**
 
 ## Dependencies
 
