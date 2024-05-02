@@ -35,6 +35,10 @@ None
 - `fail2ban_filterd_path`: [optional]: Path to directory containing filters to copy (**note the trailing slash**)
 - `fail2ban_actiond_path`: [optional]: Path to directory containing actions to copy (**note the trailing slash**)
 - `fail2ban_jaild_path`: [optional]: Path to directory containing jails to copy (**note the trailing slash**)
+- `fail2ban_filterd_templates`: [optional]: List of template file names (without extension ".j2"). The files should be in the directory: templates/fail2ban/etc/fail2ban/filter.d/
+- `fail2ban_actiond_templates`: [optional]: List of template file names (without extension ".j2"). The files should be in the directory: templates/fail2ban/etc/fail2ban/action.d/
+- `fail2ban_jaild_templates`: [optional]: List of template file names (without extension ".j2"). The files should be in the directory: templates/fail2ban/etc/fail2ban/jail.d/
+
 
 - `fail2ban_services` [default see `defaults/main.yml`]: Service definitions
 - `fail2ban_services.{n}.name` [required]: Service name (e.g. `ssh`)
