@@ -2,4 +2,4 @@
 ---
 fail2ban_dependencies:
   - fail2ban
-  - "{{ (fail2ban_backend == 'systemd') | ternary('python' + (ansible_python_version is version('3', '>=') | ternary('3', '')) + '-systemd', '') }}"
+  - "{{ (fail2ban_backend == 'systemd') | ternary('python' + (ansible_facts['python_version'] is version('3', '>=') | ternary('3', '')) + '-systemd', '') }}"

@@ -38,7 +38,7 @@ None
 
 - `fail2ban_services` [default see `defaults/main.yml`]: Service definitions
 - `fail2ban_services.{n}.name` [required]: Service name (e.g. `ssh`)
-- `fail2ban_services.{n}.enabled` [default: `true`]: Whether or not enabled
+- `fail2ban_services.{n}.enabled` [default: `true`]: Whether enabled
 - `fail2ban_services.{n}.*` [optional]: Name of the option
 - `fail2ban_services.{n}.*.*` [optional]: Value of the option
 
